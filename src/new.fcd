@@ -1,0 +1,22 @@
+:ROOT:
+
+:TITLE:
+My API manual
+:END:
+
+:TEXT:
+All support pathes:
+:END:
+:TOC:
+
+:BLOCK:
+
+TITLE
+
+:CODE:
+printf()
+:END:
+
+:END:
+
+:END:
