@@ -1,0 +1,17 @@
+/block 'main block'/
+
+/title/ My API documentation \title\
+
+/tableofcontens\
+
+/text/ This is /b/ bold text \b\ continue. \text\
+
+/img ''/ Image not load :( \img\
+
+/code/
+printf("Hello world");
+\code\
+
+
+
+\block\

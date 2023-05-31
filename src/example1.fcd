@@ -1,0 +1,12 @@
+<root>
+<block>
+
+<title> My API documentation. </title>
+
+<text> This is </text> :TEXT_BOLD: bold text :END:
+:TEXT:
+
+:NEWLINE:
+
+:END:
+:END:

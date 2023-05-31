@@ -1,0 +1,65 @@
+<!-- 
+Online HTML, CSS and JavaScript editor to run code online.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Browser</title>
+</head>
+
+<body>
+    <!--<pre><b>focus</b></pre>-->
+    <div class="block">
+   <h1 class="title">
+    Title
+  </h1><br>
+  <xmp class="text">This is the my Makefile:</xmp><br>
+  <pre class="code">pkglibs = pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0
+CFLAGS = -Wall -D_DEBUG_
+LDFLAGS =
+
+all: setup
+
+setup: src/main.c
+	mkdir -p ./build/icemoon
+	mkdir ./build/icemoon/css
+	mkdir ./build/icemoon/img
+	cp ./src/css/gtk.css ./build/icemoon/css/gtk.css
+	cp ./src/img/icon-256.png ./build/icemoon/img/icon-256.png
+	gcc $(LDFLAGS) src/main.c `$(pkglibs)` -o ./build/icemoon/icemoon $(CFLAGS)
+
+clean:
+	rm -rf ./build
+</pre>
+    </div>
+    <br>
+    <div class="block">
+   <h1 class="title">
+    Title
+  </h1><br>
+  <xmp class="text">This is the my Makefile:</xmp><br>
+  <pre class="code">pkglibs = pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0
+CFLAGS = -Wall -D_DEBUG_
+LDFLAGS =
+
+all: setup
+
+setup: src/main.c
+	mkdir -p ./build/icemoon
+	mkdir ./build/icemoon/css
+	mkdir ./build/icemoon/img
+	cp ./src/css/gtk.css ./build/icemoon/css/gtk.css
+	cp ./src/img/icon-256.png ./build/icemoon/img/icon-256.png
+	gcc $(LDFLAGS) src/main.c `$(pkglibs)` -o ./build/icemoon/icemoon $(CFLAGS)
+
+clean:
+	rm -rf ./build
+</pre>
+    </div>
+</body>
+
+</html>
