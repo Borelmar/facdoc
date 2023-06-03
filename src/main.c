@@ -1,20 +1,20 @@
-
 #include <stdio.h>
 #include <unistd.h>
-
-static char[4096] input_buff;
 
 static FILE* input_stream;
 static FILE* output_stream;
 
-static size_t input_size;
+char* input_file_data;
+char* input_file_data_cursor;
+size_t input_file_data_cursor_offset;
+size_t input_size;
 
-int put_to_stream(const char* str)
+void put_to_stream(const char* str)
 {
     fprintf(stdout_stream, "%s\n", str);
 }
 
-int get_from_stream(const char* str)
+void get_from_stream(const char* str)
 {
     fprintf(stdout_stream, "%s\n", str);
 }
@@ -22,6 +22,21 @@ int get_from_stream(const char* str)
 void close_streams(void)
 {
 
+}
+
+int do_step(void)
+{
+    if(input_file_data_cursor_offset == input_size)
+    {
+        return -1;
+    }
+    input_file_data_cursor += 1;
+    input_file_data_cursor_offset -= 1;
+    return 0;
+}
+
+char* get_block_of_state(void)
+{
 }
 
 size_t fgetsize(FILE *file)
