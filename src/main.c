@@ -37,6 +37,7 @@ int do_step(void)
 
 char* get_block_of_state(void)
 {
+    for()
 }
 
 size_t fgetsize(FILE *file)

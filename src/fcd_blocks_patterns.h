@@ -44,4 +44,6 @@
 
 extern char** block_patterns_array;
 
+#define FCD_BLOCKS_PATTERNS_COUNT 26
+
 #endif /* _FCD_BLOCKS_PATTERNS_H_ */
