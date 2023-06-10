@@ -14,6 +14,11 @@ struct toc_item
     unsigned int ordinal_num;
 };
 
+struct fcd_toc_entity
+{
+    toc_item ** toc_root;
+};
+
 /* tmod_t - text modification type */
 typedef char tmod_t;
 
@@ -24,10 +29,6 @@ struct fcd_text_modifer
     unsigned int offset_end;
 };
 
-struct fcd_toc_entity
-{
-    toc_item ** toc_root;
-};
 
 struct fcd_title_entity
 {
@@ -62,11 +63,13 @@ struct fcd_title_entity
 
 struct fcd_block {
     char* title;
+    char type;
     unsigned int ordinal_num;
     struct fcd_blocks** blocks;
-    void* entity;
+    void* entities;
 };
 
 typedef struct {
     struct fcd_block ** blocks;
 } fcd_root_struct;
+

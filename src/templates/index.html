@@ -1,6 +1,3 @@
-<!-- 
-Online HTML, CSS and JavaScript editor to run code online.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,56 +5,235 @@ Online HTML, CSS and JavaScript editor to run code online.
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
-  <title>Browser</title>
+  <title>API documentation</title>
 </head>
 
 <body>
-    <!--<pre><b>focus</b></pre>-->
-    <div class="block">
-   <h1 class="title">
-    Title
-  </h1><br>
-  <xmp class="text">This is the my Makefile:</xmp><br>
-  <pre class="code">pkglibs = pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0
-CFLAGS = -Wall -D_DEBUG_
+    <!-- TOC -->
+    <h2>Table of content</h2>
+    <ol>
+        <li><a href="#1"><span>API tree</span></a></li>
+        <li><a href="#2"><span>Request paths table</span></a></li>
+        <li><a href="#3"><span>Get test</span></a></li>
+        <li><a href="#4"><span>Delete test</span></a></li>
+        <li><a href="#5"><span>Create test</span></a></li>
+        <li><a href="#6"><span>Get test info (without tasks)</span></a></li>
+        <li><a href="#7"><span>Save test result</span></a></li>
+        <li><a href="#8"><span>Get result</span></a></li>
+        <li><a href="#9"><span>Get test without answers</span></a></li>
+        <li><a href="#10"><span>Get results statistic of test</span></a></li>
+        <li><a href="#11"><span>Get user results</span></a></li>
+    </ol>
+    <!-- END TOC -->
 
-all: setup
-
-setup: src/main.c
-	mkdir -p ./build/icemoon
-	mkdir ./build/icemoon/css
-	mkdir ./build/icemoon/img
-	cp ./src/css/gtk.css ./build/icemoon/css/gtk.css
-	cp ./src/img/icon-256.png ./build/icemoon/img/icon-256.png
-	gcc $(LDFLAGS) src/main.c `$(pkglibs)` -o ./build/icemoon/icemoon $(CFLAGS)
-
-clean:
-	rm -rf ./build
-</pre>
+    <div class="block" id="#1">
+        <h3 class="title">API tree</h3>
+        <img src="images/blocks.png" height="300" alt="project tree">
     </div>
+
     <br>
-    <div class="block">
-   <h1 class="title">
-    Title
-  </h1><br>
-  <xmp class="text">This is the my Makefile:</xmp><br>
-  <pre class="code">pkglibs = pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0
-CFLAGS = -Wall -D_DEBUG_
 
-all: setup
+    <div class="block" id="#2">
+        <h3 class="title">Request paths table</h3>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Path</th>
+                <th>Description</th>
+                <th>Users</th>
+                <th>Tutors</th>
+                <th>Admins</th>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{test id}/detail/</td>
+                <td>Get full test</td>
+                <td>+</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>tests/{test id}/delete/</td>
+                <td>Delete full test</td>
+                <td>-</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>tests/create/</td>
+                <td>Create test</td>
+                <td>-</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{test id}/info/</td>
+                <td>Get meta info about test</td>
+                <td>+</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>tests/{test id}/create_result/</td>
+                <td>Save user test result</td>
+                <td>+</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{test id}/get_user_results/</td>
+                <td>Get user results</td>
+                <td>+</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{test id}/detail_for_user/</td>
+                <td>Get test without answers</td>
+                <td>+</td>
+                <td>-</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{result id}/result_detail/</td>
+                <td>Get test result</td>
+                <td>+</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>tests/{test id}/statistic/</td>
+                <td>Get test result</td>
+                <td>-</td>
+                <td>+</td>
+                <td>+</td>
+            </tr>
+        </table>
+    </div>
 
-setup: src/main.c
-	mkdir -p ./build/icemoon
-	mkdir ./build/icemoon/css
-	mkdir ./build/icemoon/img
-	cp ./src/css/gtk.css ./build/icemoon/css/gtk.css
-	cp ./src/img/icon-256.png ./build/icemoon/img/icon-256.png
-	gcc $(LDFLAGS) src/main.c `$(pkglibs)` -o ./build/icemoon/icemoon $(CFLAGS)
+    <br>
 
-clean:
-	rm -rf ./build
+    <div class="block" id="3">
+        <h3 class="title">Get test</h3>
+        <pre class="text">'tests/{test id}/detail/': Get full test (only for tutors or admins)
+<strong>Example:</strong>
+
+Request:</pre>
+        <pre class="code">GET /api/tests/14/detail/</pre>
+        <pre class="text">Response:</pre>
+        <pre class="code">
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 14,
+    "subject": "russian_language",
+    "name": "Тест по русскому языку",
+    "description": "Тест на знание русского языка",
+    "tasks_count": 2,
+    "owner": 1,
+    "tasks": [
+        {
+            "id": 26,
+            "options": [
+                {
+                    "id": 85,
+                    "text": "Вариант ответа 1",
+                    "ordinal_num": 1,
+                    "task": 26
+                },
+                {
+                    "id": 86,
+                    "text": "Вариант ответа 2",
+                    "ordinal_num": 2,
+                    "task": 26
+                },
+                {
+                    "id": 87,
+                    "text": "Вариант ответа 3",
+                    "ordinal_num": 3,
+                    "task": 26
+                },
+                {
+                    "id": 88,
+                    "text": "Вариант ответа 4",
+                    "ordinal_num": 4,
+                    "task": 26
+                }
+            ],
+            "text": "Вопрос 1",
+            "options_count": 4,
+            "correct_ordinal_num": 2,
+            "test": 14
+        },
+        {
+            "id": 27,
+            "options": [
+                {
+                    "id": 89,
+                    "text": "Вариант ответа A",
+                    "ordinal_num": 1,
+                    "task": 27
+                },
+                {
+                    "id": 90,
+                    "text": "Вариант ответа B",
+                    "ordinal_num": 2,
+                    "task": 27
+                },
+                {
+                    "id": 91,
+                    "text": "Вариант ответа C",
+                    "ordinal_num": 3,
+                    "task": 27
+                }
+            ],
+            "text": "Вопрос 2",
+            "options_count": 3,
+            "correct_ordinal_num": 3,
+            "test": 14
+        }
+    ]
+}
 </pre>
     </div>
+
+    <br>
+
+    <div class="block" id="4">
+        <h3 class="title">Delete test</h3>
+        <pre class="text">'tests/{test id}/delete/': Delete full test (only for tutors or admins)
+<strong>EXAMPLE:</strong>
+
+Request:</pre>
+        <pre class="code">DELETE /api/tests/13/delete/</pre>
+<pre class="text">
+Response:
+</pre>
+        <pre class="code">
+HTTP 204 No Content
+Allow: DELETE, OPTIONS
+Content-Type: application/json
+Vary: Accept
+</pre>
+    </div>
+
+    <br>
+
 </body>
+
+<footer>
+Copyright 2023
+</footer>
 
 </html>
