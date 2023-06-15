@@ -1,0 +1,24 @@
+/root 'My doc'/
+
+/section 'Chapter 1'/
+    /section 'Chapter 1.1'/
+        /text/
+        This is the big text.
+        \text\
+    \section\
+
+    /text/
+    This is /b/ bold text \b\ continue.
+    \text\
+
+    /img 'path/to/img.png'/
+    Image not load :(
+    \img\
+
+    /code/
+    printf("Hello world");
+    \code\
+
+\section\
+
+\root\

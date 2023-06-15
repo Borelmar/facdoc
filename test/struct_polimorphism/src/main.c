@@ -7,11 +7,11 @@
 
 static fcd_root_block* root_block;
 
-static fcd_block_block *
-    new_block_block(const char* title)
+static fcd_section_block *
+    new_section_block(const char* title)
 {
-    fcd_block_block* block = (fcd_block_block*)malloc(sizeof(fcd_block_block));
-    block->type = BLOCK_T_BLOCK;
+    fcd_section_block* block = (fcd_section_block*)malloc(sizeof(fcd_section_block));
+    block->type = BLOCK_T_SECTION;
     block->title = strdup(title);
     return block;
 }
@@ -44,21 +44,32 @@ static fcd_code_block *
     return block;
 }
 
+static fcd_section_block *
+    maken_nodes(fcd_section_block* block, unsigned int n, unsigned int depth)
+{
+    if(n == 0)
+    {
+        return NULL;
+    }
+
+    for(unsigned int i = 0; i < n; )
+
+    /* making */
+
+}
+
 int main(void)
 {
     /* alloc root */
     root_block = malloc(sizeof(fcd_root_block*));
 
     /* alloc 2 ptrs */
-    root_block->blocks = (fcd_block_block**)malloc( sizeof(fcd_block_block*) * 2 );
+    root_block->blocks = (fcd_section_block**)malloc( sizeof(fcd_section_block*) * 2 );
     root_block->blocks_count = 2;
 
     /* allocs blocks in root */
-    root_block->blocks[0] = new_block_block("Chapter 0");
-    root_block->blocks[1] = new_block_block("Chapter 1");
-    //root_block->blocks[2] = new_block_block("Chapter 2");
-    //root_block->blocks[3] = new_block_block("Chapter 3");
-    
+    root_block->blocks[0] = new_section_block("Chapter 0");
+    root_block->blocks[1] = new_section_block("Chapter 1");
     
     /* work with 0 chapter */
     root_block->blocks[0]->child_blocks = malloc(sizeof(void*)*3);
@@ -71,15 +82,15 @@ int main(void)
     /* work with 1 chapter */
     root_block->blocks[1]->child_blocks = malloc(sizeof(void*)*3);
     root_block->blocks[1]->child_blocks[0] = new_text_block("This is description");
-    root_block->blocks[1]->child_blocks[1] = new_block_block("Subchapter 0 in chpr 1");
+    root_block->blocks[1]->child_blocks[1] = new_section_block("Subchapter 0 in chpr 1");
     root_block->blocks[1]->child_blocks[2] = new_text_block("text...");
     root_block->blocks[1]->child_blocks_count = 3;
 
     /* sub chptr */
-    ((fcd_block_block*)root_block->blocks[1]->child_blocks[1])->child_blocks = malloc(sizeof(void*)*2);
-    ((fcd_block_block*)root_block->blocks[1]->child_blocks[1])->child_blocks[0] = new_text_block("sub 1");
-    ((fcd_block_block*)root_block->blocks[1]->child_blocks[1])->child_blocks[1] = new_text_block("sub 2");
-    ((fcd_block_block*)root_block->blocks[1]->child_blocks[1])->child_blocks_count = 2;
+    ((fcd_section_block*)root_block->blocks[1]->child_blocks[1])->child_blocks = malloc(sizeof(void*)*2);
+    ((fcd_section_block*)root_block->blocks[1]->child_blocks[1])->child_blocks[0] = new_text_block("sub 1");
+    ((fcd_section_block*)root_block->blocks[1]->child_blocks[1])->child_blocks[1] = new_text_block("sub 2");
+    ((fcd_section_block*)root_block->blocks[1]->child_blocks[1])->child_blocks_count = 2;
     //root_block->blocks[1]->child_blocks[1]->child_blocks[0] = new_text_block("sub 1");
     //root_block->blocks[1]->child_blocks[1]->child_blocks[0] = new_text_block("sub 2");
     
@@ -89,4 +100,3 @@ int main(void)
     print_fcd_root_block_tree(root_block);
 
 }
-

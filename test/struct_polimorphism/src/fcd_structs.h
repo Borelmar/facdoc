@@ -15,7 +15,7 @@ typedef enum
 
 typedef enum 
 {
-    BLOCK_T_BLOCK,
+    BLOCK_T_SECTION,
     BLOCK_T_TEXT,
     BLOCK_T_IMAGE,
     BLOCK_T_CODE,
@@ -72,7 +72,7 @@ typedef
     char* title;
     unsigned int child_blocks_count;
     void ** child_blocks;
-} fcd_block_block;
+} fcd_section_block;
 
 /* This strcut need for get type of block */
 typedef
@@ -84,8 +84,10 @@ typedef
 typedef
     struct
 {
+    char *doc_title;
+    int date;
     unsigned int blocks_count;
-    fcd_block_block ** blocks;
+    fcd_section_block ** blocks;
 } fcd_root_block;
 
 #endif /* _STRUCTS_H */

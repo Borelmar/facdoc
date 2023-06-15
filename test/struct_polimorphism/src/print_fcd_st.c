@@ -48,7 +48,7 @@ static void
 
 
 static void
-    print_fcd_block_block(fcd_block_block * block, unsigned int depth)
+    print_fcd_section_block(fcd_section_block * block, unsigned int depth)
 {
     char* ofs = chrmult(' ', depth*4);
     printf("%s** begin bblock **\n", ofs);
@@ -64,8 +64,8 @@ static void
     {
         switch( ( (fcd_base_block*)block->child_blocks[i] )->type )
         {
-            case(BLOCK_T_BLOCK):
-                print_fcd_block_block(block->child_blocks[i], depth+1);
+            case(BLOCK_T_SECTION):
+                print_fcd_section_block(block->child_blocks[i], depth+1);
                 break;
             case(BLOCK_T_TEXT):
                 print_fcd_text_block(block->child_blocks[i], depth+1);
@@ -90,7 +90,7 @@ void
     for(unsigned int i = 0; i < root_block->blocks_count; i++)
     {
         printf("** block '%d' **", i);
-        print_fcd_block_block(root_block->blocks[i], depth);
+        print_fcd_section_block(root_block->blocks[i], depth);
         printf("** end block '%d' **", i);
     }
     printf("*** END ROOT ***\n");
