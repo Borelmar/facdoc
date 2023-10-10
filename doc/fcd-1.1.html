@@ -1,0 +1,66 @@
+<h2 id="the-fcd-format-manual">The fcd format manual</h2>
+<p>Fcd - Fast Create Documentation Format. This is the lightweight
+struct format for write documentation.</p>
+<h3 id="fundamentals-of-philosophy">Fundamentals of Philosophy</h3>
+<ul>
+<li>All it’s be kind of kind block.</li>
+<li>And fcd is a hierarchy of blocks.</li>
+<li>It hierarchy of blocks describes the classic book structure.</li>
+<li>Don’t be surprised by the limitations of using some blocks in other
+blocks.</li>
+</ul>
+<h3 id="block-concept-of-fcd">Block concept of fcd</h3>
+<p>A block, in the context of fcd, is some kind of function that has a
+body and arguments.</p>
+<pre><code>(block &#39;arg1&#39;, &#39;arg2&#39;)
+    ...hierarchy of blocks...
+(block_end)</code></pre>
+<p>Block have the begin part and end part. Begining part open the body
+and take args (if they are).</p>
+<h3 id="fcd-document-structure">Fcd document structure</h3>
+<p>The document starts at the root block, called - <code>document</code>
+or <code>doc</code>. You can declare a sections and <code>include</code>
+blocks in <code>document</code> block. Sections in fcd need for organize
+information and build table of contents. Include - need for separating
+many section in one <em>.fcd</em> to many files. Example of usage:</p>
+<pre><code>(document &#39;MyDoc&#39;)
+    (section &#39;Chapter 1&#39;)
+        (include &#39;./chptr1.1.fcd&#39;)
+        (include &#39;./chptr1.2.fcd&#39;)
+    (section_end)
+    (include &#39;./chptr2.fcd&#39;)
+(document_end)</code></pre>
+<p>But in the section you can using elements blocks, like text, table,
+image and even code.</p>
+<h3 id="hello-world-document">Hello world document</h3>
+<pre><code>(document &#39;MyFirstFcdDoc&#39;)
+    (section &#39;Chpter 1&#39;)
+        (text) Hello world (textend)
+    (end_section)
+(document_end)</code></pre>
+<hr />
+<h2 id="fcd-reference">FCD reference</h2>
+<h3 id="document-block">document block</h3>
+<p>args: 1. document name 2. author 3. write date 4. contact email or
+website or phone (for example) closes: <strong>yes</strong></p>
+<pre><code>(document &#39;document name&#39; &#39;author&#39; &#39;99.99.9999&#39; &#39;ex@mail.org&#39;)
+    ...
+(enddocument)</code></pre>
+<h3 id="section-block">section block</h3>
+<p>It block is base block for for other blocks (text, code, link, etc).
+It also can recusivley have other section blocks. args: 1. section name
+closes: <strong>yes</strong></p>
+<pre><code>(doc &#39;cafebabe&#39;)
+    (section &#39;Chapter 1&#39;)
+        (sec &#39;Chapter 1.1&#39;)
+            ...
+        (sec_end)
+    (endsection)
+(end_doc)</code></pre>
+<h3 id="include-block">include block</h3>
+<p>It need for separate big document to many files. It block just paste
+data from file to main file at parsing. args: 1. file name closes:
+<strong>no</strong></p>
+<pre><code>(doc &#39;foobar&#39;)
+    (include &#39;chapter-1.fcd&#39;)
+(enddoc)</code></pre>

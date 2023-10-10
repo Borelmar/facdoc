@@ -1,0 +1,31 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.71])
+AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+AC_CONFIG_SRCDIR([windows/t.c])
+AC_CONFIG_HEADERS([config.h])
+
+# Checks for programs.
+AC_PROG_CC
+
+# Checks for libraries.
+# FIXME: Replace 'main' with a function in '-lm':
+AC_CHECK_LIB([m], [main])
+
+# Checks for header files.
+AC_CHECK_HEADERS([stdint.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_TYPE_SIZE_T
+AC_TYPE_UINT32_T
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([memset strdup strndup])
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

@@ -1,0 +1,203 @@
+fcd format have closing blocks and "one block" block. Also "start blocks" can have args.
+
+ --- document root ---
+All fcd documents started at this block,
+Args:
+1. document name
+2. author
+3. write date
+4. contact email or website or phone (for example)
+Close block: yes
+***
+(document 'document name' 'author' '99.99.9999' 'ex@mail.org')
+(enddocument)
+***
+
+ --- section block ---
+It block is base block for for other blocks (text, code, link, etc).
+It also can recusivley have other section blocks.
+Args:
+ 1. section name
+Close block: yes
+***
+(section 'Chapter 1')
+(endsection)
+***
+
+ --- include block ---
+It no-closing block. It need for separate big document to many files.
+It block just paste data from file to main file via compilation.
+Args:
+ 1. file name
+Close block: no
+***
+(include 'chapter-1.fcd')
+***
+
+--- SECTIONS-IN BLOCKS ---
+
+ --- text block ---
+Text block - just text block.
+For shielding fcd keywords just wrappe in ''.
+Args: no
+Close block: yes
+***
+(text)
+Text data
+(endtext)
+***
+keyword shielding:
+***
+(text)
+This is a '(bold)' not bold text '(bold)'.
+(endtext)
+***
+See TEXT-IN blocks to find out hightlight text
+
+ --- code block ---
+Code block need for store language-programming code, hypertext-lang code
+Args: no
+***
+(code)
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+    printf("Hello world!");
+    return 0;
+}
+(endcode)
+***
+
+ --- note block ---
+note block is just text, think it will be presented in a special message.
+Args: no
+Close block: no
+***
+(note)
+See it!!!
+(endnote)
+***
+
+ --- link block ---
+Link block is just link, can add text.
+Args:
+1. showed text
+2. link (any data)
+Close block: no
+***
+(link 'text', 'ftp://link/foo/bar')
+***
+
+ --- img block ---
+Its block for add image to doc.
+Args:
+1. path to img (it can be link via http)
+Close block: no
+***
+(img 'ftp://link/foo/bar', 'alt')
+***
+
+ --- table block ---
+Its block implementation for write table to doc.
+Args: no
+Close block: yes
+***
+(table 'description')
+    (row)
+        (header)Header(endheader)
+        (header)Header 1(endheader)
+    (endrow)
+    (row)
+        (cell)txt(endcell)
+        (cell)txt 1(endcell)
+    (endrow)
+    (row)
+        (cell)txt(endcell)
+        (cell)txt 1(endcell)
+    (endrow)
+(endtable)
+***
+
+
+ --- TEXT-IN BLOCKS ---
+Its blocks using for text hightlight
+
+--- bold text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (b)bold text(bend)
+(endtext)
+***
+
+--- italic text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (i)italic text(iend)
+(endtext)
+***
+
+--- underline via text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (u)underline via text(uend)
+(endtext)
+***
+
+--- marked text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (m)marked text(mend)
+(endtext)
+***
+
+--- superscripted text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (sup)marked text(supend)
+(endtext)
+***
+
+--- subscripted text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (sub)marked text(subend)
+(endtext)
+***
+
+--- link text ---
+See link block.
+
+
+--- deleted text ---
+Args: no
+Close block: yes
+***
+(text)
+This is (d)marked text(d)
+(endtext)
+***
+
+
+ --- shielding keyword ---
+keyword shielding:
+***
+(text)
+This is a \(bold)\ not bold text \(boldend)\.
+(endtext)
+***
+
+TODO:
+    shell block

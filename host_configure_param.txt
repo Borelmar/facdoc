@@ -1,0 +1,12 @@
+#!/bin/sh
+# --host=platform_type-processor-system
+# platform_type: x86_64, i686, arm, aarch64...
+# processor: intel, amd, armv7, armv8...
+# system: linux, darwin, windows, freebsd, android...
+
+--host=x86_64-linux
+--host=i686-linux
+--host=aarch64-linux-android
+--host=arm-linux
+--host=x86_64-apple-darwin
+--host=i686-w64-mingw32
