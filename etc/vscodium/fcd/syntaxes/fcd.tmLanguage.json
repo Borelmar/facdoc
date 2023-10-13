@@ -1,0 +1,203 @@
+{
+  "name": "Fcd Documentation Language",
+  "scopeName": "source.fcd",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#punctuation"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#todos"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.fcd",
+          "captures": {
+            "0": "punctuation.definition.comment.fcd"
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(end_?(code)?|((code)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(header|head|hd)|((header|head|hd)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(cell|cl)|((cell|cl)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?row|((row)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?list|((list)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?table|((table)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(t(e)?xt)|((t(e)?xt)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(superscript|sup)|((superscript|sup)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(subscript|sub)|((subscript|sub)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(delete|del)|((delete|del)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(mark|m)|((mark|m)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(underline|uline|u)|((underline|uline|u)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?(italic|i)|((italic|i)_?end))\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?doc(ument)?)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(end_?sec(tion)?)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(doc(ument)?)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(sec(tion)?)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\blink\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\btext\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\bcode\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\btable\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\blist\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\bcsv_table\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\brow\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(cell|cl)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(header|head|hd)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(bold|b)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(italic|i)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(underline|uline|u)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(mark|m)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(superscript|sup)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(subscript|sub)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(delete|del)\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\binclude\\b",
+          "name": "keyword.fcd"
+        },
+        {
+          "match": "\\b(img|image)\\b",
+          "name": "keyword.fcd"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": "\\(|\\)",
+          "name": "punctuation.definition.fcd"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "match": "'[^']*'",
+          "name": "string.single-quoted.fcd"
+        }
+      ]
+    },
+    "todos": {
+      "patterns": [
+        {
+          "match": "\\b(TODO|FIXME|XXX|NOTE)\\b",
+          "name": "keyword.other.fcd"
+        }
+      ]
+    }
+  }
+}

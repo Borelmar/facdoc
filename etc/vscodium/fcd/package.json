@@ -1,0 +1,25 @@
+{
+  "name": "fcd",
+  "displayName": "Fcd",
+  "description": "Fcd Documentation Language",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "fcd",
+      "aliases": ["Fcd Documentation Language", "fcd"],
+      "extensions": [".fcd",".facdoc"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "fcd",
+      "scopeName": "source.fcd",
+      "path": "./syntaxes/fcd.tmLanguage.json"
+    }]
+  }
+}
