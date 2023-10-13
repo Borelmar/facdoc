@@ -1,56 +1,56 @@
-let b:current_syntax = "fcd"
+" Fcd syntax file
+" Maintainer:   ungoogler@xgnu.org
+" Version:      1.0
+" Language:     fcd-1.0.0
 
-let l_end = "(end(_)?)"
-let r_end = "((_)?end)"
-let document =  "(doc(ument)?)"
-let e_document = "(${l_end}${document})|(${document}${r_end})"
-let include =   "(include)"
-let section =   "(sec(tion)?)"
-let e_section = "(${l_end}${section})|(${section}${r_end})"
+if exists("b:current_syntax")
+	let b:current_syntax = "fcd"
+endif
 
-let link =      "(link)"
-let image =     "(img|image)"
-let shell =     "(sh|shell|cmd|command)"
+syn match fcdKeyword /\<\(end_\?\(code\)\)\|\(\(code\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(header\|head\|hd\)\)\|\(\(header\|head\|hd\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(cell\|cl\)\)\|\(\(cell\|cl\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(row\)\)\|\(\(row\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(list\)\)\|\(\(list\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(table\)\)\|\(\(table\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(t\(e\)\?xt\)\)\|\(\(t\(e\)\?xt\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(superscript\|sup\)\)\|\(\(superscript\|sup\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(subscript\|sub\)\)\|\(\(subscript\|sub\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(delete\|del\)\)\|\(\(delete\|del\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(mark\|m\)\)\|\(\(mark\|m\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(underline\|uline\|u\)\)\|\(\(underline\|uline\|u\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(italic\|i\)\)\|\(\(italic\|i\)_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?doc\(ument\)\?\)\|\(doc\(ument\)\?_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?sec\(tion\)\?\)\|\(sec\(tion\)\?_\?end\)\>/
+syn match fcdKeyword /\<\(end_\?\(bold\|b\)\)\|\(\(bold\|b\)_\?end\)\>/
+syn match fcdKeyword /\<doc\(ument\)\?\>/
+syn match fcdKeyword /\<sec\(tion\)\?\>/
+syn match fcdKeyword /\<link\>/
+syn match fcdKeyword /\<text\>/
+syn match fcdKeyword /\<code\>/
+syn match fcdKeyword /\<table\>/
+syn match fcdKeyword /\<list\>/
+syn match fcdKeyword /\<csv_table\>/
+syn match fcdKeyword /\<row\>/
+syn match fcdKeyword /\<\(cell\|cl\)>/
+syn match fcdKeyword /\<\(header\|head\|hd\)\>/
+syn match fcdKeyword /\<\(bold\|b\)\>/
+syn match fcdKeyword /\<\(italic\|i\)\>/
+syn match fcdKeyword /\<\(underline\|uline\|u\)\>/
+syn match fcdKeyword /\<\(mark\|m\)\>/
+syn match fcdKeyword /\<\(superscript\|sup\)\>/
+syn match fcdKeyword /\<\(subscript\|sub\)\>/
+syn match fcdKeyword /\<\(delete\|del\)\>/
+syn match fcdKeyword /\<include\>/
+syn match fcdKeyword /\<\(img\|image\)\>/
 
-let text =      "(t(e)?xt)"
-let e_text =    "(${l_end}${text})|(${text}${r_end})"
-let code =      "(code)"
-let e_code =    "(${l_end}${code})|(${code}${r_end})"
-let table =     "(table)"
-let e_table =   "(${l_end}${table})|(${table}${r_end})"
-let list =      "(list)"
-let e_list =    "(${l_end}${list})|(${list}${r_end})"
-let csv_table = "(csv_table)"
+syn match fcdPare "(\|)"
+syn match fcdString "\'[^"]*\'"
+syn keyword fcdTodo contained TODO FIXME XXX NOTE
+syn match fcdComment "/\*.*\*/" contains=fcdTodo
 
-let row =       "(row)"
-let e_row =     "(${l_end}${row})|(${row}${r_end})"
-
-let cell =      "(cell|cl)"
-let e_cell =    "(${l_end}${cell})|(${cell}${r_end})"
-let header =    "(header|head|hd)"
-let e_header =  "(${l_end}${header})|(${header}${r_end})"
-
-let bold =          "(bold|b)"
-let e_bold =        "(${l_end}${bold})|(${bold}${r_end})"
-let italic =        "(italic|i)"
-let e_italic =      "(${l_end}${italic})|(${italic}${r_end})"
-let underline =     "(underline|uline|u)"
-let e_underline =   "(${l_end}${underline})|(${underline}${r_end})"
-let mark =          "(mark|m)"
-let e_mark =        "(${l_end}${mark})|(${mark}${r_end})"
-let superscript =   "(superscript|sup)"
-let e_superscript = "(${l_end}${superscript})|(${superscript}${r_end})"
-let subscript =     "(subscript|sub)"
-let e_subscript =   "(${l_end}${subscript})|(${subscript}${r_end})"
-let delete =        "(delete|del|d)"
-let e_delete =      "(${l_end}${delete})|(${delete}${r_end})"
-
-syn keyword fcdKeyword document include section link image shell text code table list csv_table row cell header bold italic underline mark superscript subscript delete e_document e_include e_section e_link e_image e_shell e_text e_code e_table e_list e_csv_table e_row e_cell e_header e_bold e_italic e_underline e_mark e_superscript e_subscript e_delete
-
-
-syn match fcdComment "/\*.*\*/"
-syn match fcdString '\'[^"]*\''
-
+hi def link fcdPare Delimiter 
 hi def link fcdKeyword Keyword
 hi def link fcdComment Comment
+hi def link fcdTodo Todo
 hi def link fcdString String
