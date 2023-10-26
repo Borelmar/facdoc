@@ -18,38 +18,18 @@
 #include <string.h>
 #include <string.h>
 
-extern unsigned int strarr_data_size(char **array, unsigned int size);
-/*
-unsigned int strarr_data_size(char **array, unsigned int size)
-{
-    unsigned int data_size = 0;
-    for (unsigned int i = 0; i < size; i++)
-    {
-        data_size += strlen(array[i]);
-    }
-    return data_size;
-}
-*/
+extern size_t strarr_data_size(const char **arr, size_t n);
+extern char *stralloc(size_t n);
 
-extern char *stralloc(size_t size);
-/*
-char *stralloc(size_t size)
+char *strarrcat(const char **array, size_t n)
 {
-    char *_ret = (char*)malloc(size+1); +1 for null byte
-    _ret[size] = '\0';
-    return _ret;
-}
-*/
-
-char *strarrcat(char **array, unsigned int size)
-{
-    unsigned int dsize = strarr_data_size(array, size);
+    size_t dsize = strarr_data_size(array, n);
     char *_ret = stralloc(dsize);
     char *_curr = _ret;
 
-    for (unsigned int i = 0; i < size; i++)
+    for (size_t i = 0; i < n; i++)
     {
-        unsigned int _size = strlen(array[i]);
+        size_t _size = strlen(array[i]);
         memcpy(_curr, array[i], _size);
         _curr += _size;
     }

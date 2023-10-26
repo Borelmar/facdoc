@@ -1,5 +1,5 @@
 /*
- * This is implementation asprintf for compile on windows.
+ * This is implementation GNU asprintf(3).
  */
 
 /* 
@@ -26,13 +26,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/**
- * `asprintf.c' - asprintf
- *
- * copyright (c) 2014 joseph werle <joseph.werle@gmail.com>
- */
+/*
+ *  copyright (c) 2014 joseph werle <joseph.werle@gmail.com>
+*/
 
-#ifndef HAVE_ASPRINTF
+#ifdef HAVE_ASPRINTF
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,36 +38,35 @@ SOFTWARE.
 
 /* #include "asprintf.h" */
 
-int
-vasprintf (char **str, const char *fmt, va_list args) {
-  int size = 0;
-  va_list tmpa;
+int vasprintf (char **str, const char *fmt, va_list args) {
+    int size = 0;
+    va_list tmpa;
 
-  // copy
-  va_copy(tmpa, args);
+    /* copy */
+    va_copy(tmpa, args);
 
-  // apply variadic arguments to
-  // sprintf with format to get size
-  size = vsnprintf(NULL, 0, fmt, tmpa);
+    /* apply variadic arguments to */
+    /* sprintf with format to get size */
+    size = vsnprintf(NULL, 0, fmt, tmpa);
 
-  // toss args
-  va_end(tmpa);
+    /* toss args */
+    va_end(tmpa);
 
-  // return -1 to be compliant if
-  // size is less than 0
-  if (size < 0) { return -1; }
+    /* return -1 to be compliant if */
+    /* size is less than 0 */
+    if (size < 0) { return -1; }
 
-  // alloc with size plus 1 for `\0'
-  *str = (char *) malloc(size + 1);
+    /* alloc with size plus 1 for `\0' */
+    *str = (char *) malloc(size + 1);
 
-  // return -1 to be compliant
-  // if pointer is `NULL'
-  if (NULL == *str) { return -1; }
+    /* return -1 to be compliant */
+    /* if pointer is `NULL' */
+    if (NULL == *str) { return -1; }
 
-  // format string with original
-  // variadic arguments and set new size
-  size = vsprintf(*str, fmt, args);
-  return size;
+    /* format string with original */
+    /* variadic arguments and set new size */
+    size = vsprintf(*str, fmt, args);
+    return size;
 }
 
 

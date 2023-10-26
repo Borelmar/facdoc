@@ -106,8 +106,26 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_facdoc_OBJECTS = src/fcd/facdoc-parser.$(OBJEXT) \
-	src/fcd/facdoc-lexer.$(OBJEXT) src/facdoc-main.$(OBJEXT)
+am_facdoc_OBJECTS = src/util/facdoc-strarr_data_size.$(OBJEXT) \
+	src/util/facdoc-strrealloc.$(OBJEXT) \
+	src/util/facdoc-mallocn.$(OBJEXT) \
+	src/util/facdoc-astrcat.$(OBJEXT) \
+	src/util/facdoc-fcd_asprintf.$(OBJEXT) \
+	src/util/facdoc-strarrcat.$(OBJEXT) \
+	src/util/facdoc-chrmult.$(OBJEXT) \
+	src/util/facdoc-wildcard.$(OBJEXT) \
+	src/util/facdoc-base64.$(OBJEXT) \
+	src/util/facdoc-fferror.$(OBJEXT) \
+	src/util/facdoc-dicount.$(OBJEXT) \
+	src/util/facdoc-stralloc.$(OBJEXT) \
+	src/util/facdoc-maxofa.$(OBJEXT) \
+	src/util/facdoc-size_t2str.$(OBJEXT) \
+	src/util/facdoc-astrncat.$(OBJEXT) \
+	src/util/facdoc-fgetsize.$(OBJEXT) \
+	src/fcd/facdoc-fcd.$(OBJEXT) \
+	src/fcd/facdoc-print_fcd_st.$(OBJEXT) \
+	src/fcd/facdoc-fcd_st2gv.$(OBJEXT) src/facdoc-facdoc.$(OBJEXT) \
+	src/fcd/facdoc-parser.$(OBJEXT) src/fcd/facdoc-lexer.$(OBJEXT)
 facdoc_OBJECTS = $(am_facdoc_OBJECTS)
 facdoc_DEPENDENCIES =
 facdoc_LINK = $(CCLD) $(facdoc_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
@@ -127,9 +145,28 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = src/$(DEPDIR)/facdoc-main.Po \
+am__depfiles_remade = src/$(DEPDIR)/facdoc-facdoc.Po \
+	src/fcd/$(DEPDIR)/facdoc-fcd.Po \
+	src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po \
 	src/fcd/$(DEPDIR)/facdoc-lexer.Po \
-	src/fcd/$(DEPDIR)/facdoc-parser.Po
+	src/fcd/$(DEPDIR)/facdoc-parser.Po \
+	src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po \
+	src/util/$(DEPDIR)/facdoc-astrcat.Po \
+	src/util/$(DEPDIR)/facdoc-astrncat.Po \
+	src/util/$(DEPDIR)/facdoc-base64.Po \
+	src/util/$(DEPDIR)/facdoc-chrmult.Po \
+	src/util/$(DEPDIR)/facdoc-dicount.Po \
+	src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po \
+	src/util/$(DEPDIR)/facdoc-fferror.Po \
+	src/util/$(DEPDIR)/facdoc-fgetsize.Po \
+	src/util/$(DEPDIR)/facdoc-mallocn.Po \
+	src/util/$(DEPDIR)/facdoc-maxofa.Po \
+	src/util/$(DEPDIR)/facdoc-size_t2str.Po \
+	src/util/$(DEPDIR)/facdoc-stralloc.Po \
+	src/util/$(DEPDIR)/facdoc-strarr_data_size.Po \
+	src/util/$(DEPDIR)/facdoc-strarrcat.Po \
+	src/util/$(DEPDIR)/facdoc-strrealloc.Po \
+	src/util/$(DEPDIR)/facdoc-wildcard.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -319,10 +356,11 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = m4
 ACLOCAL_AMLOCAL = -I m4 --install
-BUILT_SOURCES = src/fcd/parser.h src/fcd/parser.c src/fcd/lexer.c
-AM_YFLAGS = -d
-facdoc_SOURCES = src/fcd/parser.y src/fcd/lexer.l src/main.c
-facdoc_CFLAGS = -std=gnu99 -Wall -I../src/fcd/ $(am__append_1)
+BUILT_SOURCES = src/fcd/parser.c src/fcd/lexer.c src/fcd/parser.h
+AM_YFLAGS = --debug -d
+facdoc_SOURCES = src/util/strarr_data_size.c src/util/fcd_asprintf.h src/util/strrealloc.c src/util/mallocn.c src/util/astrcat.c src/util/fcd_asprintf.c src/util/strarrcat.c src/util/chrmult.c src/util/wildcard.c src/util/base64.c src/util/fferror.c src/util/util.h src/util/dicount.c src/util/stralloc.c src/util/maxofa.c src/util/size_t2str.c src/util/astrncat.c src/util/fgetsize.c src/facdoc.h src/fcd/fcd.c src/fcd/print_fcd_st.h src/fcd/fcd.h src/fcd/errors.h src/fcd/print_fcd_st.c src/fcd/fcd_st2gv.c src/fcd/fcd_st2gv.h src/facdoc.c src/fcd/parser.y src/fcd/lexer.l
+facdoc_CFLAGS = -std=gnu99 -Wall -I../src/ -I../src/fcd/ \
+	-I../src/util/ -I../src/translators/html/ $(am__append_1)
 
 # -I../src/util/ \
 # -I../src/fcd/ \
@@ -424,18 +462,55 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-src/fcd/parser.h: src/fcd/parser.c
-	@if test ! -f $@; then rm -f src/fcd/parser.c; else :; fi
-	@if test ! -f $@; then $(MAKE) $(AM_MAKEFLAGS) src/fcd/parser.c; else :; fi
+src/util/$(am__dirstamp):
+	@$(MKDIR_P) src/util
+	@: > src/util/$(am__dirstamp)
+src/util/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) src/util/$(DEPDIR)
+	@: > src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-strarr_data_size.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-strrealloc.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-mallocn.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-astrcat.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-fcd_asprintf.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-strarrcat.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-chrmult.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-wildcard.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-base64.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-fferror.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-dicount.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-stralloc.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-maxofa.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-size_t2str.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-astrncat.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
+src/util/facdoc-fgetsize.$(OBJEXT): src/util/$(am__dirstamp) \
+	src/util/$(DEPDIR)/$(am__dirstamp)
 src/fcd/$(am__dirstamp):
 	@$(MKDIR_P) src/fcd
 	@: > src/fcd/$(am__dirstamp)
 src/fcd/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/fcd/$(DEPDIR)
 	@: > src/fcd/$(DEPDIR)/$(am__dirstamp)
-src/fcd/facdoc-parser.$(OBJEXT): src/fcd/$(am__dirstamp) \
+src/fcd/facdoc-fcd.$(OBJEXT): src/fcd/$(am__dirstamp) \
 	src/fcd/$(DEPDIR)/$(am__dirstamp)
-src/fcd/facdoc-lexer.$(OBJEXT): src/fcd/$(am__dirstamp) \
+src/fcd/facdoc-print_fcd_st.$(OBJEXT): src/fcd/$(am__dirstamp) \
+	src/fcd/$(DEPDIR)/$(am__dirstamp)
+src/fcd/facdoc-fcd_st2gv.$(OBJEXT): src/fcd/$(am__dirstamp) \
 	src/fcd/$(DEPDIR)/$(am__dirstamp)
 src/$(am__dirstamp):
 	@$(MKDIR_P) src
@@ -443,8 +518,15 @@ src/$(am__dirstamp):
 src/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/$(DEPDIR)
 	@: > src/$(DEPDIR)/$(am__dirstamp)
-src/facdoc-main.$(OBJEXT): src/$(am__dirstamp) \
+src/facdoc-facdoc.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+src/fcd/parser.h: src/fcd/parser.c
+	@if test ! -f $@; then rm -f src/fcd/parser.c; else :; fi
+	@if test ! -f $@; then $(MAKE) $(AM_MAKEFLAGS) src/fcd/parser.c; else :; fi
+src/fcd/facdoc-parser.$(OBJEXT): src/fcd/$(am__dirstamp) \
+	src/fcd/$(DEPDIR)/$(am__dirstamp)
+src/fcd/facdoc-lexer.$(OBJEXT): src/fcd/$(am__dirstamp) \
+	src/fcd/$(DEPDIR)/$(am__dirstamp)
 
 facdoc$(EXEEXT): $(facdoc_OBJECTS) $(facdoc_DEPENDENCIES) $(EXTRA_facdoc_DEPENDENCIES) 
 	@rm -f facdoc$(EXEEXT)
@@ -454,13 +536,33 @@ mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 	-rm -f src/*.$(OBJEXT)
 	-rm -f src/fcd/*.$(OBJEXT)
+	-rm -f src/util/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/facdoc-main.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/facdoc-facdoc.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/fcd/$(DEPDIR)/facdoc-fcd.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/fcd/$(DEPDIR)/facdoc-lexer.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/fcd/$(DEPDIR)/facdoc-parser.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-astrcat.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-astrncat.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-base64.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-chrmult.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-dicount.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-fferror.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-fgetsize.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-mallocn.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-maxofa.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-size_t2str.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-stralloc.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-strarr_data_size.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-strarrcat.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-strrealloc.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/util/$(DEPDIR)/facdoc-wildcard.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -483,6 +585,286 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+src/util/facdoc-strarr_data_size.o: src/util/strarr_data_size.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strarr_data_size.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-strarr_data_size.Tpo -c -o src/util/facdoc-strarr_data_size.o `test -f 'src/util/strarr_data_size.c' || echo '$(srcdir)/'`src/util/strarr_data_size.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strarr_data_size.Tpo src/util/$(DEPDIR)/facdoc-strarr_data_size.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strarr_data_size.c' object='src/util/facdoc-strarr_data_size.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strarr_data_size.o `test -f 'src/util/strarr_data_size.c' || echo '$(srcdir)/'`src/util/strarr_data_size.c
+
+src/util/facdoc-strarr_data_size.obj: src/util/strarr_data_size.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strarr_data_size.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-strarr_data_size.Tpo -c -o src/util/facdoc-strarr_data_size.obj `if test -f 'src/util/strarr_data_size.c'; then $(CYGPATH_W) 'src/util/strarr_data_size.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strarr_data_size.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strarr_data_size.Tpo src/util/$(DEPDIR)/facdoc-strarr_data_size.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strarr_data_size.c' object='src/util/facdoc-strarr_data_size.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strarr_data_size.obj `if test -f 'src/util/strarr_data_size.c'; then $(CYGPATH_W) 'src/util/strarr_data_size.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strarr_data_size.c'; fi`
+
+src/util/facdoc-strrealloc.o: src/util/strrealloc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strrealloc.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-strrealloc.Tpo -c -o src/util/facdoc-strrealloc.o `test -f 'src/util/strrealloc.c' || echo '$(srcdir)/'`src/util/strrealloc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strrealloc.Tpo src/util/$(DEPDIR)/facdoc-strrealloc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strrealloc.c' object='src/util/facdoc-strrealloc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strrealloc.o `test -f 'src/util/strrealloc.c' || echo '$(srcdir)/'`src/util/strrealloc.c
+
+src/util/facdoc-strrealloc.obj: src/util/strrealloc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strrealloc.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-strrealloc.Tpo -c -o src/util/facdoc-strrealloc.obj `if test -f 'src/util/strrealloc.c'; then $(CYGPATH_W) 'src/util/strrealloc.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strrealloc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strrealloc.Tpo src/util/$(DEPDIR)/facdoc-strrealloc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strrealloc.c' object='src/util/facdoc-strrealloc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strrealloc.obj `if test -f 'src/util/strrealloc.c'; then $(CYGPATH_W) 'src/util/strrealloc.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strrealloc.c'; fi`
+
+src/util/facdoc-mallocn.o: src/util/mallocn.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-mallocn.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-mallocn.Tpo -c -o src/util/facdoc-mallocn.o `test -f 'src/util/mallocn.c' || echo '$(srcdir)/'`src/util/mallocn.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-mallocn.Tpo src/util/$(DEPDIR)/facdoc-mallocn.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/mallocn.c' object='src/util/facdoc-mallocn.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-mallocn.o `test -f 'src/util/mallocn.c' || echo '$(srcdir)/'`src/util/mallocn.c
+
+src/util/facdoc-mallocn.obj: src/util/mallocn.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-mallocn.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-mallocn.Tpo -c -o src/util/facdoc-mallocn.obj `if test -f 'src/util/mallocn.c'; then $(CYGPATH_W) 'src/util/mallocn.c'; else $(CYGPATH_W) '$(srcdir)/src/util/mallocn.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-mallocn.Tpo src/util/$(DEPDIR)/facdoc-mallocn.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/mallocn.c' object='src/util/facdoc-mallocn.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-mallocn.obj `if test -f 'src/util/mallocn.c'; then $(CYGPATH_W) 'src/util/mallocn.c'; else $(CYGPATH_W) '$(srcdir)/src/util/mallocn.c'; fi`
+
+src/util/facdoc-astrcat.o: src/util/astrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-astrcat.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-astrcat.Tpo -c -o src/util/facdoc-astrcat.o `test -f 'src/util/astrcat.c' || echo '$(srcdir)/'`src/util/astrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-astrcat.Tpo src/util/$(DEPDIR)/facdoc-astrcat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/astrcat.c' object='src/util/facdoc-astrcat.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-astrcat.o `test -f 'src/util/astrcat.c' || echo '$(srcdir)/'`src/util/astrcat.c
+
+src/util/facdoc-astrcat.obj: src/util/astrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-astrcat.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-astrcat.Tpo -c -o src/util/facdoc-astrcat.obj `if test -f 'src/util/astrcat.c'; then $(CYGPATH_W) 'src/util/astrcat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/astrcat.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-astrcat.Tpo src/util/$(DEPDIR)/facdoc-astrcat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/astrcat.c' object='src/util/facdoc-astrcat.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-astrcat.obj `if test -f 'src/util/astrcat.c'; then $(CYGPATH_W) 'src/util/astrcat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/astrcat.c'; fi`
+
+src/util/facdoc-fcd_asprintf.o: src/util/fcd_asprintf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fcd_asprintf.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-fcd_asprintf.Tpo -c -o src/util/facdoc-fcd_asprintf.o `test -f 'src/util/fcd_asprintf.c' || echo '$(srcdir)/'`src/util/fcd_asprintf.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fcd_asprintf.Tpo src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fcd_asprintf.c' object='src/util/facdoc-fcd_asprintf.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fcd_asprintf.o `test -f 'src/util/fcd_asprintf.c' || echo '$(srcdir)/'`src/util/fcd_asprintf.c
+
+src/util/facdoc-fcd_asprintf.obj: src/util/fcd_asprintf.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fcd_asprintf.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-fcd_asprintf.Tpo -c -o src/util/facdoc-fcd_asprintf.obj `if test -f 'src/util/fcd_asprintf.c'; then $(CYGPATH_W) 'src/util/fcd_asprintf.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fcd_asprintf.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fcd_asprintf.Tpo src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fcd_asprintf.c' object='src/util/facdoc-fcd_asprintf.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fcd_asprintf.obj `if test -f 'src/util/fcd_asprintf.c'; then $(CYGPATH_W) 'src/util/fcd_asprintf.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fcd_asprintf.c'; fi`
+
+src/util/facdoc-strarrcat.o: src/util/strarrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strarrcat.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-strarrcat.Tpo -c -o src/util/facdoc-strarrcat.o `test -f 'src/util/strarrcat.c' || echo '$(srcdir)/'`src/util/strarrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strarrcat.Tpo src/util/$(DEPDIR)/facdoc-strarrcat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strarrcat.c' object='src/util/facdoc-strarrcat.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strarrcat.o `test -f 'src/util/strarrcat.c' || echo '$(srcdir)/'`src/util/strarrcat.c
+
+src/util/facdoc-strarrcat.obj: src/util/strarrcat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-strarrcat.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-strarrcat.Tpo -c -o src/util/facdoc-strarrcat.obj `if test -f 'src/util/strarrcat.c'; then $(CYGPATH_W) 'src/util/strarrcat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strarrcat.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-strarrcat.Tpo src/util/$(DEPDIR)/facdoc-strarrcat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/strarrcat.c' object='src/util/facdoc-strarrcat.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-strarrcat.obj `if test -f 'src/util/strarrcat.c'; then $(CYGPATH_W) 'src/util/strarrcat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/strarrcat.c'; fi`
+
+src/util/facdoc-chrmult.o: src/util/chrmult.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-chrmult.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-chrmult.Tpo -c -o src/util/facdoc-chrmult.o `test -f 'src/util/chrmult.c' || echo '$(srcdir)/'`src/util/chrmult.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-chrmult.Tpo src/util/$(DEPDIR)/facdoc-chrmult.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/chrmult.c' object='src/util/facdoc-chrmult.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-chrmult.o `test -f 'src/util/chrmult.c' || echo '$(srcdir)/'`src/util/chrmult.c
+
+src/util/facdoc-chrmult.obj: src/util/chrmult.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-chrmult.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-chrmult.Tpo -c -o src/util/facdoc-chrmult.obj `if test -f 'src/util/chrmult.c'; then $(CYGPATH_W) 'src/util/chrmult.c'; else $(CYGPATH_W) '$(srcdir)/src/util/chrmult.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-chrmult.Tpo src/util/$(DEPDIR)/facdoc-chrmult.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/chrmult.c' object='src/util/facdoc-chrmult.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-chrmult.obj `if test -f 'src/util/chrmult.c'; then $(CYGPATH_W) 'src/util/chrmult.c'; else $(CYGPATH_W) '$(srcdir)/src/util/chrmult.c'; fi`
+
+src/util/facdoc-wildcard.o: src/util/wildcard.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-wildcard.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-wildcard.Tpo -c -o src/util/facdoc-wildcard.o `test -f 'src/util/wildcard.c' || echo '$(srcdir)/'`src/util/wildcard.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-wildcard.Tpo src/util/$(DEPDIR)/facdoc-wildcard.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/wildcard.c' object='src/util/facdoc-wildcard.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-wildcard.o `test -f 'src/util/wildcard.c' || echo '$(srcdir)/'`src/util/wildcard.c
+
+src/util/facdoc-wildcard.obj: src/util/wildcard.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-wildcard.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-wildcard.Tpo -c -o src/util/facdoc-wildcard.obj `if test -f 'src/util/wildcard.c'; then $(CYGPATH_W) 'src/util/wildcard.c'; else $(CYGPATH_W) '$(srcdir)/src/util/wildcard.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-wildcard.Tpo src/util/$(DEPDIR)/facdoc-wildcard.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/wildcard.c' object='src/util/facdoc-wildcard.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-wildcard.obj `if test -f 'src/util/wildcard.c'; then $(CYGPATH_W) 'src/util/wildcard.c'; else $(CYGPATH_W) '$(srcdir)/src/util/wildcard.c'; fi`
+
+src/util/facdoc-base64.o: src/util/base64.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-base64.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-base64.Tpo -c -o src/util/facdoc-base64.o `test -f 'src/util/base64.c' || echo '$(srcdir)/'`src/util/base64.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-base64.Tpo src/util/$(DEPDIR)/facdoc-base64.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/base64.c' object='src/util/facdoc-base64.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-base64.o `test -f 'src/util/base64.c' || echo '$(srcdir)/'`src/util/base64.c
+
+src/util/facdoc-base64.obj: src/util/base64.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-base64.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-base64.Tpo -c -o src/util/facdoc-base64.obj `if test -f 'src/util/base64.c'; then $(CYGPATH_W) 'src/util/base64.c'; else $(CYGPATH_W) '$(srcdir)/src/util/base64.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-base64.Tpo src/util/$(DEPDIR)/facdoc-base64.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/base64.c' object='src/util/facdoc-base64.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-base64.obj `if test -f 'src/util/base64.c'; then $(CYGPATH_W) 'src/util/base64.c'; else $(CYGPATH_W) '$(srcdir)/src/util/base64.c'; fi`
+
+src/util/facdoc-fferror.o: src/util/fferror.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fferror.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-fferror.Tpo -c -o src/util/facdoc-fferror.o `test -f 'src/util/fferror.c' || echo '$(srcdir)/'`src/util/fferror.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fferror.Tpo src/util/$(DEPDIR)/facdoc-fferror.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fferror.c' object='src/util/facdoc-fferror.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fferror.o `test -f 'src/util/fferror.c' || echo '$(srcdir)/'`src/util/fferror.c
+
+src/util/facdoc-fferror.obj: src/util/fferror.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fferror.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-fferror.Tpo -c -o src/util/facdoc-fferror.obj `if test -f 'src/util/fferror.c'; then $(CYGPATH_W) 'src/util/fferror.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fferror.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fferror.Tpo src/util/$(DEPDIR)/facdoc-fferror.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fferror.c' object='src/util/facdoc-fferror.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fferror.obj `if test -f 'src/util/fferror.c'; then $(CYGPATH_W) 'src/util/fferror.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fferror.c'; fi`
+
+src/util/facdoc-dicount.o: src/util/dicount.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-dicount.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-dicount.Tpo -c -o src/util/facdoc-dicount.o `test -f 'src/util/dicount.c' || echo '$(srcdir)/'`src/util/dicount.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-dicount.Tpo src/util/$(DEPDIR)/facdoc-dicount.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/dicount.c' object='src/util/facdoc-dicount.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-dicount.o `test -f 'src/util/dicount.c' || echo '$(srcdir)/'`src/util/dicount.c
+
+src/util/facdoc-dicount.obj: src/util/dicount.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-dicount.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-dicount.Tpo -c -o src/util/facdoc-dicount.obj `if test -f 'src/util/dicount.c'; then $(CYGPATH_W) 'src/util/dicount.c'; else $(CYGPATH_W) '$(srcdir)/src/util/dicount.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-dicount.Tpo src/util/$(DEPDIR)/facdoc-dicount.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/dicount.c' object='src/util/facdoc-dicount.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-dicount.obj `if test -f 'src/util/dicount.c'; then $(CYGPATH_W) 'src/util/dicount.c'; else $(CYGPATH_W) '$(srcdir)/src/util/dicount.c'; fi`
+
+src/util/facdoc-stralloc.o: src/util/stralloc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-stralloc.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-stralloc.Tpo -c -o src/util/facdoc-stralloc.o `test -f 'src/util/stralloc.c' || echo '$(srcdir)/'`src/util/stralloc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-stralloc.Tpo src/util/$(DEPDIR)/facdoc-stralloc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/stralloc.c' object='src/util/facdoc-stralloc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-stralloc.o `test -f 'src/util/stralloc.c' || echo '$(srcdir)/'`src/util/stralloc.c
+
+src/util/facdoc-stralloc.obj: src/util/stralloc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-stralloc.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-stralloc.Tpo -c -o src/util/facdoc-stralloc.obj `if test -f 'src/util/stralloc.c'; then $(CYGPATH_W) 'src/util/stralloc.c'; else $(CYGPATH_W) '$(srcdir)/src/util/stralloc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-stralloc.Tpo src/util/$(DEPDIR)/facdoc-stralloc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/stralloc.c' object='src/util/facdoc-stralloc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-stralloc.obj `if test -f 'src/util/stralloc.c'; then $(CYGPATH_W) 'src/util/stralloc.c'; else $(CYGPATH_W) '$(srcdir)/src/util/stralloc.c'; fi`
+
+src/util/facdoc-maxofa.o: src/util/maxofa.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-maxofa.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-maxofa.Tpo -c -o src/util/facdoc-maxofa.o `test -f 'src/util/maxofa.c' || echo '$(srcdir)/'`src/util/maxofa.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-maxofa.Tpo src/util/$(DEPDIR)/facdoc-maxofa.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/maxofa.c' object='src/util/facdoc-maxofa.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-maxofa.o `test -f 'src/util/maxofa.c' || echo '$(srcdir)/'`src/util/maxofa.c
+
+src/util/facdoc-maxofa.obj: src/util/maxofa.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-maxofa.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-maxofa.Tpo -c -o src/util/facdoc-maxofa.obj `if test -f 'src/util/maxofa.c'; then $(CYGPATH_W) 'src/util/maxofa.c'; else $(CYGPATH_W) '$(srcdir)/src/util/maxofa.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-maxofa.Tpo src/util/$(DEPDIR)/facdoc-maxofa.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/maxofa.c' object='src/util/facdoc-maxofa.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-maxofa.obj `if test -f 'src/util/maxofa.c'; then $(CYGPATH_W) 'src/util/maxofa.c'; else $(CYGPATH_W) '$(srcdir)/src/util/maxofa.c'; fi`
+
+src/util/facdoc-size_t2str.o: src/util/size_t2str.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-size_t2str.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-size_t2str.Tpo -c -o src/util/facdoc-size_t2str.o `test -f 'src/util/size_t2str.c' || echo '$(srcdir)/'`src/util/size_t2str.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-size_t2str.Tpo src/util/$(DEPDIR)/facdoc-size_t2str.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/size_t2str.c' object='src/util/facdoc-size_t2str.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-size_t2str.o `test -f 'src/util/size_t2str.c' || echo '$(srcdir)/'`src/util/size_t2str.c
+
+src/util/facdoc-size_t2str.obj: src/util/size_t2str.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-size_t2str.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-size_t2str.Tpo -c -o src/util/facdoc-size_t2str.obj `if test -f 'src/util/size_t2str.c'; then $(CYGPATH_W) 'src/util/size_t2str.c'; else $(CYGPATH_W) '$(srcdir)/src/util/size_t2str.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-size_t2str.Tpo src/util/$(DEPDIR)/facdoc-size_t2str.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/size_t2str.c' object='src/util/facdoc-size_t2str.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-size_t2str.obj `if test -f 'src/util/size_t2str.c'; then $(CYGPATH_W) 'src/util/size_t2str.c'; else $(CYGPATH_W) '$(srcdir)/src/util/size_t2str.c'; fi`
+
+src/util/facdoc-astrncat.o: src/util/astrncat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-astrncat.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-astrncat.Tpo -c -o src/util/facdoc-astrncat.o `test -f 'src/util/astrncat.c' || echo '$(srcdir)/'`src/util/astrncat.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-astrncat.Tpo src/util/$(DEPDIR)/facdoc-astrncat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/astrncat.c' object='src/util/facdoc-astrncat.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-astrncat.o `test -f 'src/util/astrncat.c' || echo '$(srcdir)/'`src/util/astrncat.c
+
+src/util/facdoc-astrncat.obj: src/util/astrncat.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-astrncat.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-astrncat.Tpo -c -o src/util/facdoc-astrncat.obj `if test -f 'src/util/astrncat.c'; then $(CYGPATH_W) 'src/util/astrncat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/astrncat.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-astrncat.Tpo src/util/$(DEPDIR)/facdoc-astrncat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/astrncat.c' object='src/util/facdoc-astrncat.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-astrncat.obj `if test -f 'src/util/astrncat.c'; then $(CYGPATH_W) 'src/util/astrncat.c'; else $(CYGPATH_W) '$(srcdir)/src/util/astrncat.c'; fi`
+
+src/util/facdoc-fgetsize.o: src/util/fgetsize.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fgetsize.o -MD -MP -MF src/util/$(DEPDIR)/facdoc-fgetsize.Tpo -c -o src/util/facdoc-fgetsize.o `test -f 'src/util/fgetsize.c' || echo '$(srcdir)/'`src/util/fgetsize.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fgetsize.Tpo src/util/$(DEPDIR)/facdoc-fgetsize.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fgetsize.c' object='src/util/facdoc-fgetsize.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fgetsize.o `test -f 'src/util/fgetsize.c' || echo '$(srcdir)/'`src/util/fgetsize.c
+
+src/util/facdoc-fgetsize.obj: src/util/fgetsize.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/util/facdoc-fgetsize.obj -MD -MP -MF src/util/$(DEPDIR)/facdoc-fgetsize.Tpo -c -o src/util/facdoc-fgetsize.obj `if test -f 'src/util/fgetsize.c'; then $(CYGPATH_W) 'src/util/fgetsize.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fgetsize.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/util/$(DEPDIR)/facdoc-fgetsize.Tpo src/util/$(DEPDIR)/facdoc-fgetsize.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/util/fgetsize.c' object='src/util/facdoc-fgetsize.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/util/facdoc-fgetsize.obj `if test -f 'src/util/fgetsize.c'; then $(CYGPATH_W) 'src/util/fgetsize.c'; else $(CYGPATH_W) '$(srcdir)/src/util/fgetsize.c'; fi`
+
+src/fcd/facdoc-fcd.o: src/fcd/fcd.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-fcd.o -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-fcd.Tpo -c -o src/fcd/facdoc-fcd.o `test -f 'src/fcd/fcd.c' || echo '$(srcdir)/'`src/fcd/fcd.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-fcd.Tpo src/fcd/$(DEPDIR)/facdoc-fcd.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/fcd.c' object='src/fcd/facdoc-fcd.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-fcd.o `test -f 'src/fcd/fcd.c' || echo '$(srcdir)/'`src/fcd/fcd.c
+
+src/fcd/facdoc-fcd.obj: src/fcd/fcd.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-fcd.obj -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-fcd.Tpo -c -o src/fcd/facdoc-fcd.obj `if test -f 'src/fcd/fcd.c'; then $(CYGPATH_W) 'src/fcd/fcd.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/fcd.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-fcd.Tpo src/fcd/$(DEPDIR)/facdoc-fcd.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/fcd.c' object='src/fcd/facdoc-fcd.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-fcd.obj `if test -f 'src/fcd/fcd.c'; then $(CYGPATH_W) 'src/fcd/fcd.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/fcd.c'; fi`
+
+src/fcd/facdoc-print_fcd_st.o: src/fcd/print_fcd_st.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-print_fcd_st.o -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Tpo -c -o src/fcd/facdoc-print_fcd_st.o `test -f 'src/fcd/print_fcd_st.c' || echo '$(srcdir)/'`src/fcd/print_fcd_st.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Tpo src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/print_fcd_st.c' object='src/fcd/facdoc-print_fcd_st.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-print_fcd_st.o `test -f 'src/fcd/print_fcd_st.c' || echo '$(srcdir)/'`src/fcd/print_fcd_st.c
+
+src/fcd/facdoc-print_fcd_st.obj: src/fcd/print_fcd_st.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-print_fcd_st.obj -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Tpo -c -o src/fcd/facdoc-print_fcd_st.obj `if test -f 'src/fcd/print_fcd_st.c'; then $(CYGPATH_W) 'src/fcd/print_fcd_st.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/print_fcd_st.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Tpo src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/print_fcd_st.c' object='src/fcd/facdoc-print_fcd_st.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-print_fcd_st.obj `if test -f 'src/fcd/print_fcd_st.c'; then $(CYGPATH_W) 'src/fcd/print_fcd_st.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/print_fcd_st.c'; fi`
+
+src/fcd/facdoc-fcd_st2gv.o: src/fcd/fcd_st2gv.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-fcd_st2gv.o -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Tpo -c -o src/fcd/facdoc-fcd_st2gv.o `test -f 'src/fcd/fcd_st2gv.c' || echo '$(srcdir)/'`src/fcd/fcd_st2gv.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Tpo src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/fcd_st2gv.c' object='src/fcd/facdoc-fcd_st2gv.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-fcd_st2gv.o `test -f 'src/fcd/fcd_st2gv.c' || echo '$(srcdir)/'`src/fcd/fcd_st2gv.c
+
+src/fcd/facdoc-fcd_st2gv.obj: src/fcd/fcd_st2gv.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-fcd_st2gv.obj -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Tpo -c -o src/fcd/facdoc-fcd_st2gv.obj `if test -f 'src/fcd/fcd_st2gv.c'; then $(CYGPATH_W) 'src/fcd/fcd_st2gv.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/fcd_st2gv.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Tpo src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/fcd_st2gv.c' object='src/fcd/facdoc-fcd_st2gv.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-fcd_st2gv.obj `if test -f 'src/fcd/fcd_st2gv.c'; then $(CYGPATH_W) 'src/fcd/fcd_st2gv.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/fcd_st2gv.c'; fi`
+
+src/facdoc-facdoc.o: src/facdoc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/facdoc-facdoc.o -MD -MP -MF src/$(DEPDIR)/facdoc-facdoc.Tpo -c -o src/facdoc-facdoc.o `test -f 'src/facdoc.c' || echo '$(srcdir)/'`src/facdoc.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/facdoc-facdoc.Tpo src/$(DEPDIR)/facdoc-facdoc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/facdoc.c' object='src/facdoc-facdoc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/facdoc-facdoc.o `test -f 'src/facdoc.c' || echo '$(srcdir)/'`src/facdoc.c
+
+src/facdoc-facdoc.obj: src/facdoc.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/facdoc-facdoc.obj -MD -MP -MF src/$(DEPDIR)/facdoc-facdoc.Tpo -c -o src/facdoc-facdoc.obj `if test -f 'src/facdoc.c'; then $(CYGPATH_W) 'src/facdoc.c'; else $(CYGPATH_W) '$(srcdir)/src/facdoc.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/facdoc-facdoc.Tpo src/$(DEPDIR)/facdoc-facdoc.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/facdoc.c' object='src/facdoc-facdoc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/facdoc-facdoc.obj `if test -f 'src/facdoc.c'; then $(CYGPATH_W) 'src/facdoc.c'; else $(CYGPATH_W) '$(srcdir)/src/facdoc.c'; fi`
 
 src/fcd/facdoc-parser.o: src/fcd/parser.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/fcd/facdoc-parser.o -MD -MP -MF src/fcd/$(DEPDIR)/facdoc-parser.Tpo -c -o src/fcd/facdoc-parser.o `test -f 'src/fcd/parser.c' || echo '$(srcdir)/'`src/fcd/parser.c
@@ -511,20 +893,6 @@ src/fcd/facdoc-lexer.obj: src/fcd/lexer.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/fcd/lexer.c' object='src/fcd/facdoc-lexer.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/fcd/facdoc-lexer.obj `if test -f 'src/fcd/lexer.c'; then $(CYGPATH_W) 'src/fcd/lexer.c'; else $(CYGPATH_W) '$(srcdir)/src/fcd/lexer.c'; fi`
-
-src/facdoc-main.o: src/main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/facdoc-main.o -MD -MP -MF src/$(DEPDIR)/facdoc-main.Tpo -c -o src/facdoc-main.o `test -f 'src/main.c' || echo '$(srcdir)/'`src/main.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/facdoc-main.Tpo src/$(DEPDIR)/facdoc-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/main.c' object='src/facdoc-main.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/facdoc-main.o `test -f 'src/main.c' || echo '$(srcdir)/'`src/main.c
-
-src/facdoc-main.obj: src/main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -MT src/facdoc-main.obj -MD -MP -MF src/$(DEPDIR)/facdoc-main.Tpo -c -o src/facdoc-main.obj `if test -f 'src/main.c'; then $(CYGPATH_W) 'src/main.c'; else $(CYGPATH_W) '$(srcdir)/src/main.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/facdoc-main.Tpo src/$(DEPDIR)/facdoc-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/main.c' object='src/facdoc-main.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(facdoc_CFLAGS) $(CFLAGS) -c -o src/facdoc-main.obj `if test -f 'src/main.c'; then $(CYGPATH_W) 'src/main.c'; else $(CYGPATH_W) '$(srcdir)/src/main.c'; fi`
 
 .l.c:
 	$(AM_V_LEX)$(am__skiplex) $(SHELL) $(YLWRAP) $< $(LEX_OUTPUT_ROOT).c $@ -- $(LEXCOMPILE)
@@ -802,6 +1170,8 @@ distclean-generic:
 	-rm -f src/$(am__dirstamp)
 	-rm -f src/fcd/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/fcd/$(am__dirstamp)
+	-rm -f src/util/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/util/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -816,9 +1186,28 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-		-rm -f src/$(DEPDIR)/facdoc-main.Po
+		-rm -f src/$(DEPDIR)/facdoc-facdoc.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-fcd.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po
 	-rm -f src/fcd/$(DEPDIR)/facdoc-lexer.Po
 	-rm -f src/fcd/$(DEPDIR)/facdoc-parser.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-astrcat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-astrncat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-base64.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-chrmult.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-dicount.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fferror.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fgetsize.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-mallocn.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-maxofa.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-size_t2str.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-stralloc.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strarr_data_size.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strarrcat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strrealloc.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-wildcard.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
@@ -866,9 +1255,28 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-		-rm -f src/$(DEPDIR)/facdoc-main.Po
+		-rm -f src/$(DEPDIR)/facdoc-facdoc.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-fcd.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-fcd_st2gv.Po
 	-rm -f src/fcd/$(DEPDIR)/facdoc-lexer.Po
 	-rm -f src/fcd/$(DEPDIR)/facdoc-parser.Po
+	-rm -f src/fcd/$(DEPDIR)/facdoc-print_fcd_st.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-astrcat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-astrncat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-base64.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-chrmult.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-dicount.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fcd_asprintf.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fferror.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-fgetsize.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-mallocn.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-maxofa.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-size_t2str.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-stralloc.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strarr_data_size.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strarrcat.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-strrealloc.Po
+	-rm -f src/util/$(DEPDIR)/facdoc-wildcard.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

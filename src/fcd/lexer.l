@@ -17,13 +17,22 @@
 */
 
 %{
+
+/*
+<TEXT_S>(?:(?!\(text\)|\(endtext\))(.|\n))*     { yylval.string_val = strdup(yytext); return TEXT; }
+<ARG>\'.*\'                                     { yylval.string_val = strdup(yytext); return TEXT; }
+*/
 #include <stdio.h>
 #include "parser.h"
 %}
 
 %option noyywrap
+%option yylineno
 %option debug
+
 %x COMMENT
+%x TEXT_S
+%x ARG
 
 l_end       (end(_)?)
 r_end       ((_)?end)
@@ -41,14 +50,11 @@ text        (t(e)?xt)
 e_text      ({l_end}{text})|({text}{r_end})
 code        (code)
 e_code      ({l_end}{code})|({code}{r_end})
-/* note        (note)
-e_note      ({l_end}{note})|({note}{r_end}) */
 table       (table)
 e_table     ({l_end}{table})|({table}{r_end})
 list        (list)
 e_list      ({l_end}{list})|({list}{r_end})
 csv_table   (csv_table)
-
 
 row         (row)
 e_row       ({l_end}{row})|({row}{r_end})
@@ -75,16 +81,9 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 
 %%
 
-
-"/*"            BEGIN(COMMENT);
-<COMMENT>"*/"   BEGIN(INITIAL);
-<COMMENT>.|\n   ;
-
-[\t\n ]     { /* whitespaces */ }
-
 "("         { return '('; }
 ")"         { return ')'; }
-"'"         { return '\''; }
+
 
 {document}          { return BEGIN_DOCUMENT; }
 {e_document}        { return END_DOCUMENT; }
@@ -95,8 +94,8 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
                         /* section-in blocks */
 {link}                  { return LINK; }
 {image}                 { return IMAGE; }
-{text}                  { return BEGIN_TEXT; }
-{e_text}                { return END_TEXT; }
+{text}                  { BEGIN(TEXT_S) ; return BEGIN_TEXT; }
+<TEXT_S>{e_text}        { BEGIN(INITIAL) ; return END_TEXT; }
 {code}                  { return BEGIN_CODE; }
 {e_code}                { return END_CODE; }
 {table}                 { return BEGIN_TABLE; }
@@ -128,6 +127,17 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 {delete}            { return BEGIN_DELETED_TEXT; }
 {e_delete}          { return END_DELETED_TEXT; }
 
-[0-9A-Za-z]+        { return TEXT; }
+
+"/*"            BEGIN(COMMENT);
+<COMMENT>"*/"   BEGIN(INITIAL);
+<COMMENT>.|\n   ;
+
+[\t\n ]     { /* whitespaces */ }
+
+.                   {
+                        printf("Error at line %d: unrecognized symbol \"%s\"\n",
+                            yylloc.first_line, yytext);
+                        exit(0);
+                    }
 
 %%

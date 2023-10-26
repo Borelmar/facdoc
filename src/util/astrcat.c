@@ -1,5 +1,5 @@
 /* 
- * Alloc STRing conCATentation (astrcat)
+ * Allocated STRing conCATentation (astrcat)
  * Copyright (C) 2023 Free Software Foundation, Inc.
  *
  * This file is part of facdoc.
@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 
-char *astrcat(char *dest, char *src)
+char *astrcat(const char *dest, const char *src)
 {
     char *ret = malloc(strlen(dest)+strlen(src)+1);
     strcpy(ret, dest);

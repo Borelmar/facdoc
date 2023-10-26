@@ -23,10 +23,10 @@
 
 extern char *chrmult(char chr, size_t factor);
 
-extern char *uint2str(unsigned int num);
+extern char *size_t2str(size_t num);
 
 extern unsigned int maxofa(unsigned int *array,
-        unsigned int elements_count);
+        size_t elements_count);
 
 /*
  *
@@ -41,27 +41,27 @@ extern unsigned int maxofa(unsigned int *array,
 
 void fferror (
     char *prev_line,
-    unsigned int prev_line_num,
+    size_t prev_line_num,
 
     char *line,
-    unsigned int line_num,
+    size_t line_num,
 
     char *next_line,
-    unsigned int next_line_num,
+    size_t next_line_num,
 
     int error_code,
-    unsigned int symbol_in_line,
+    size_t symbol_in_line,
     char *error_message)
 {
     char *format = "\
 Error: \033[91m%s\033[0m at line %d\n\
-    \033[2m%d%s | %s\033[0m\n\
-    \033[0m%d%s | %s\033[0m\n\
+    \033[2m%zu%s | %s\033[0m\n\
+    \033[0m%zu%s | %s\033[0m\n\
    %s | %s\033[91m^\033[0m\n\
-    \033[2m%d%s | %s\033[0m\n\
+    \033[2m%zu%s | %s\033[0m\n\
 Code: 0x%08x\n";
 
-    /* need spaces count bettwen line num and separator */
+    /* need spaces count between line num and separator */
     unsigned int spofn1 = 0;
     unsigned int spofn2 = 0;
     unsigned int spofn3 = 0;
@@ -87,9 +87,9 @@ Code: 0x%08x\n";
 
     /* calculate digits count of lines nums */
     /* 1 --> convert int to str */
-    char *prev_line_num_str = uint2str(prev_line_num);
-    char *line_num_str  = uint2str(line_num);
-    char *next_line_num_str = uint2str(next_line_num);
+    char *prev_line_num_str = size_t2str(prev_line_num);
+    char *line_num_str  = size_t2str(line_num);
+    char *next_line_num_str = size_t2str(next_line_num);
 
     /* calculate */
     digits_count_l1 = strlen(prev_line_num_str);

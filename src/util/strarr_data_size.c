@@ -17,12 +17,12 @@
 */
 #include <string.h>
 
-unsigned int strarr_data_size(char **array, unsigned int size)
+size_t strarr_data_size(const char **arr, size_t n)
 {
-    unsigned int data_size = 0;
-    for (unsigned int i = 0; i < size; i++)
+    size_t data_size = 0;
+    for (size_t i = 0; i < n; i++)
     {
-        data_size += strlen(array[i]);
+        data_size += strlen(arr[i]);
     }
     return data_size;
 }

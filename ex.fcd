@@ -1,0 +1,7 @@
+(document 'MyDocument')
+    (section 'MyDoc')
+        (text)
+        Text
+        (endtext)
+    (endsec)
+(enddoc)

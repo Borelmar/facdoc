@@ -88,3 +88,6 @@ closes: **no**
     (include 'chapter-1.fcd')
 (enddoc)
 ```
+## Section-in blocks
+### Text block
+Text block - just text block, it maybe have 

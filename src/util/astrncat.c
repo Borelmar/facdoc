@@ -1,5 +1,5 @@
 /* 
- * Alloc STRing conCATentation up to N-bytes (astnrcat)
+ * Allocated STRing conCATentation up to N-bytes (astnrcat)
  * Copyright (C) 2023 Free Software Foundation, Inc.
  *
  * This file is part of facdoc.
@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 
-char *astrncat(char *dest, char *src, unsigned int size)
+char *astrncat(const char *dest, const char *src, size_t size)
 {
     char *ret = malloc(strlen(dest) + size + 1);
     strcpy(ret, dest);

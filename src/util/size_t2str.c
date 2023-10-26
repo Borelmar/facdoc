@@ -16,15 +16,20 @@
  * Foobar. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "stdlib.h"
+#include "stdio.h"
+#include "config.h"
+
+#ifdef HAVE_ASPRINTF
+extern int asprintf(char **str, const char *fmt, ...);
+extern int vasprintf(char **str, const char *fmt, va_list args);
+#endif
+extern char *stralloc(size_t size);
 
 char *
-    uint2str(unsigned int num)
+    size_t2str(size_t num)
 {
-    size_t size = 64;
-    char *str = malloc(size);
-    snprintf(str, size, "%d", num);
-    str[size-1] = '\0';
+    char *str;
+    asprintf(&str, "%d", num);
     return str;
 }

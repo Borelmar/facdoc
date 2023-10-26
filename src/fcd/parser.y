@@ -19,22 +19,32 @@
 %{
 #include <stdio.h>
 
-#define YYDEBUG 1
+
+#ifdef YYDEBUG
+  yydebug = 1;
+#endif
+
+extern int yylineno;
 
 int yylex();
 int yyparse();
 void yyerror(const char *s);
 
+/*
 static const int HAVE_BEGIN_DOCUMENT = 0;
 static const char *CURRENT_FILE_NAME = NULL;
 static const size_t CURRENT_FILE_LINE = 0;
+*/
 
 %}
+%locations
 
-// %define parse.error verbose
+%union {
+    char *string_val;
+}
 
 /* General blocks */
-%token TEXT
+%token <string_val> TEXT
 
 %token BEGIN_DOCUMENT END_DOCUMENT
 %token INCLUDE
@@ -45,7 +55,6 @@ static const size_t CURRENT_FILE_LINE = 0;
 %token IMAGE
 %token BEGIN_TEXT END_TEXT
 %token BEGIN_CODE END_CODE
-//%token BEGIN_NOTE END_NOTE
 %token BEGIN_TABLE END_TABLE
 
 /* table-in blocks */
@@ -71,8 +80,8 @@ static const size_t CURRENT_FILE_LINE = 0;
 /* *** GENERAL *** */
 document:
       /* empty */
-    | '(' BEGIN_DOCUMENT '\'' TEXT '\'' ')' '(' END_DOCUMENT ')' { printf("\nOK\n"); }
-    | '(' BEGIN_DOCUMENT '\'' TEXT '\'' ')' document_content '(' END_DOCUMENT ')' { printf("\nOK\n"); }
+    | '(' BEGIN_DOCUMENT TEXT ')' '(' END_DOCUMENT ')' { printf("Create the %s documentation.", $3); }
+    | '(' BEGIN_DOCUMENT TEXT ')' document_content '(' END_DOCUMENT ')' { printf("\nOK\n"); }
     ;
 
 document_content:
@@ -81,9 +90,9 @@ document_content:
     ;
 
 documentin_block:
-      '(' INCLUDE '\'' TEXT '\'' ')'
-    | '(' BEGIN_SECTION '\'' TEXT '\'' ')' '(' END_SECTION ')'
-    | '(' BEGIN_SECTION '\'' TEXT '\'' ')' section_content '(' END_SECTION ')'
+      '(' INCLUDE TEXT ')'
+    | '(' BEGIN_SECTION TEXT ')' '(' END_SECTION ')'
+    | '(' BEGIN_SECTION TEXT ')' section_content '(' END_SECTION ')'
     ;
 /* *** END GENERAL *** */
 
@@ -96,11 +105,8 @@ section_content:
 
 
 sectionin_block:
-      '(' IMAGE '\'' TEXT '\'' ')'
-    | '(' LINK '\'' TEXT '\'' ')'
-
-    /* | '(' BEGIN_NOTE ')' '(' END_NOTE ')'
-    | '(' BEGIN_NOTE ')' note_content '(' END_NOTE ')' */
+      '(' IMAGE TEXT ')'
+    | '(' LINK TEXT ')'
 
     | '(' BEGIN_TEXT ')' '(' END_TEXT ')'
     | '(' BEGIN_TEXT ')' text_content '(' END_TEXT ')'
@@ -130,23 +136,6 @@ textin_block:
     ;
 /* *** END TEXT *** */
 
-/* *** NOTE *** */
-/* note_content:
-      notein_block
-    | text_content notein_block
-    ;
-
-notein_block:
-      '(' BEGIN_BOLD_TEXT ')'           TEXT    '(' END_BOLD_TEXT ')'
-    | '(' BEGIN_ITALIC_TEXT ')'         TEXT    '(' END_ITALIC_TEXT ')'
-    | '(' BEGIN_UNDERLINE_TEXT ')'      TEXT    '(' END_UNDERLINE_TEXT ')'
-    | '(' BEGIN_MARK_TEXT ')'           TEXT    '(' END_MARK_TEXT ')'
-    | '(' BEGIN_SUPERSCRIPT_TEXT ')'    TEXT    '(' END_SUPERSCRIPT_TEXT ')'
-    | '(' BEGIN_SUBSCRIPT_TEXT ')'      TEXT    '(' END_SUBSCRIPT_TEXT ')'
-    | '(' BEGIN_DELETED_TEXT ')'        TEXT    '(' END_DELETED_TEXT ')'
-    ;
-*/
-/* *** END NOTE *** */
 
 /* *** CODE *** */
 code_content:
@@ -179,7 +168,19 @@ rowin_block:
 
 %%
 
+/*
 void yyerror(const char *s)
 {
     fprintf(stderr, "Error: %s\n", s);
+}
+*/
+
+/*
+void yyerror(const char *message) {
+    fprintf(stderr, "Ошибка: %s в строке %d, позиция ...\n", message, yylineno);
+}
+*/
+
+void yyerror(const char *message) {
+    fprintf(stderr, "Ошибка: %s в строке %d, позиция %d\n", message, yylloc.first_line, yylloc.first_column);
 }

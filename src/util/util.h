@@ -19,29 +19,19 @@
 #ifndef _UTIL_H__
 #define _UTIL_H__
 
-#ifndef BIGGER_C_INT_T
-#   define BIGGER_C_INT_T unsigned long long int
-#endif
-
 
 /* Calculate the data size with strlen(3)
  * in the array with (unsigned int size) size
  */
-extern unsigned int
-    strarr_data_size(char **array, unsigned int size);
+extern size_t
+    strarr_data_size(char **array, size_t size);
 
 
-extern unsigned long long int bstrlen(char *str);
-
-
-/* Concatinate a strings on array with size (unsigned int size) */
-extern char *strarrcat(char **array, unsigned int size);
-
-/* Secure free (wrapper) */
-extern void sfree(void *ptr);
+/* Concatinate a strings on array with n elements */
+extern char *strarrcat(const char **array, size_t n);
 
 /* Alloc mem for str with null byte (using malloc(3) ) */
-extern char *stralloc(size_t size);
+extern char *stralloc(size_t n);
 
 /* Imlementation of UNIX wildcards */
 extern int
@@ -62,16 +52,16 @@ extern char*
  */
 extern void fferror (
     char *prev_line,
-    unsigned int prev_line_num,
+    size_t prev_line_num,
 
     char *line,
-    unsigned int line_num,
+    size_t line_num,
 
     char *next_line,
-    unsigned int next_line_num,
+    size_t next_line_num,
 
     int error_code,
-    unsigned int symbol_in_line,
+    size_t symbol_in_line,
     char *error_message);
 
 
@@ -90,10 +80,6 @@ char *b64encode(const unsigned char *data,
 extern unsigned int dicount(unsigned int x);
 
 
-#ifndef HAVE_ASPRINTF
-extern int asprintf (char **str, const char *fmt, ...);
-extern int vasprintf (char **str, const char *fmt, va_list args);
-#endif
 
 
 extern char *astrncat(char *dest, char *src, unsigned int size);

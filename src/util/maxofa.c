@@ -16,12 +16,13 @@
  * Foobar. If not, see <https://www.gnu.org/licenses/>. 
 */
 
+#include <stddef.h>
 
-unsigned int maxofa(unsigned int *array,
-        unsigned int elements_count)
+size_t maxofa(const unsigned int *array,
+        size_t n)
 {
-    unsigned int max = 0;
-    for(unsigned int i = 0; i < elements_count; i++)
+    size_t max = 0;
+    for(size_t i = 0; i < n; i++)
     {
         if(array[i] > max)
         {
