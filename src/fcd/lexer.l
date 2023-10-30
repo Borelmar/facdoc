@@ -18,10 +18,6 @@
 
 %{
 
-/*
-<TEXT_S>(?:(?!\(text\)|\(endtext\))(.|\n))*     { yylval.string_val = strdup(yytext); return TEXT; }
-<ARG>\'.*\'                                     { yylval.string_val = strdup(yytext); return TEXT; }
-*/
 #include <stdio.h>
 #include "parser.h"
 %}
@@ -81,6 +77,10 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 
 %%
 
+
+<TEXT_S>(?:(?!\(endtext\))(.|\n))*  {}
+<ARG>\'.*\'                         { yylval.string_val = strdup(yytext); return TEXT; }
+
 "("         { return '('; }
 ")"         { return ')'; }
 
@@ -128,9 +128,9 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 {e_delete}          { return END_DELETED_TEXT; }
 
 
-"/*"            BEGIN(COMMENT);
-<COMMENT>"*/"   BEGIN(INITIAL);
-<COMMENT>.|\n   ;
+"/*"            { BEGIN(COMMENT); }
+<COMMENT>"*/"   { BEGIN(INITIAL); }
+<COMMENT>.|\n   { }
 
 [\t\n ]     { /* whitespaces */ }
 
