@@ -1,0 +1,1 @@
+(doc 'MyDoc')(section 'chpt1')(text)This is my.(textend)(endsection)(enddoc)

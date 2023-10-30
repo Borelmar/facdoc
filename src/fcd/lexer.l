@@ -20,6 +20,10 @@
 
 #include <stdio.h>
 #include "parser.h"
+
+// <TEXT_S>(?:(?!\(endtext\))(.|\n))*  {}
+
+/* <ARG>\'.*\'             { yylval.string_val = strdup(yytext); return TEXT; } */
 %}
 
 %option noyywrap
@@ -78,8 +82,12 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 %%
 
 
-<TEXT_S>(?:(?!\(endtext\))(.|\n))*  {}
-<ARG>\'.*\'                         { yylval.string_val = strdup(yytext); return TEXT; }
+<TEXT_S>[^(endtext)\n]*  { printf("\n*text* '%s' *text*\n", yytext); yylval.string_val = strdup(yytext); return TEXT; }
+
+"'"         { BEGIN(ARG); return '\''; }
+<ARG>"'"    { BEGIN(INITIAL); return '\''; }
+
+<ARG>[^']*     { printf("\n*text* '%s' *text*\n", yytext); yylval.string_val = strdup(yytext); return TEXT; }
 
 "("         { return '('; }
 ")"         { return ')'; }
@@ -126,6 +134,7 @@ e_delete        ({l_end}{delete})|({delete}{r_end})
 {e_subscript}       { return END_SUBSCRIPT_TEXT; }
 {delete}            { return BEGIN_DELETED_TEXT; }
 {e_delete}          { return END_DELETED_TEXT; }
+
 
 
 "/*"            { BEGIN(COMMENT); }

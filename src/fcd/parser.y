@@ -80,8 +80,8 @@ static const size_t CURRENT_FILE_LINE = 0;
 /* *** GENERAL *** */
 document:
       /* empty */
-    | '(' BEGIN_DOCUMENT TEXT ')' '(' END_DOCUMENT ')' { printf("Create the %s documentation.", $3); }
-    | '(' BEGIN_DOCUMENT TEXT ')' document_content '(' END_DOCUMENT ')' { printf("\nOK\n"); }
+    | '(' BEGIN_DOCUMENT '\'' TEXT '\'' ')' '(' END_DOCUMENT ')' { printf("Create the '%s' documentation.\n", $4); }
+    | '(' BEGIN_DOCUMENT '\'' TEXT '\'' ')' document_content '(' END_DOCUMENT ')' { printf("\nOK\n"); }
     ;
 
 document_content:
@@ -90,9 +90,9 @@ document_content:
     ;
 
 documentin_block:
-      '(' INCLUDE TEXT ')'
-    | '(' BEGIN_SECTION TEXT ')' '(' END_SECTION ')'
-    | '(' BEGIN_SECTION TEXT ')' section_content '(' END_SECTION ')'
+      '(' INCLUDE '\'' TEXT '\'' ')'
+    | '(' BEGIN_SECTION '\'' TEXT '\'' ')' '(' END_SECTION ')'
+    | '(' BEGIN_SECTION '\'' TEXT '\'' ')' section_content '(' END_SECTION ')'
     ;
 /* *** END GENERAL *** */
 
